@@ -1,9 +1,9 @@
 package com.proxy.services.captchaservices.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.proxy.services.captchaservices.beans.RecaptchaUtil;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -66,9 +66,9 @@ public class CaptchaController {
         }
     }
 
-    @PostMapping(value = "/captcha/verification/v2")
+    @PostMapping(value = "/captcha/verification/v2", produces = "application/json")
     @ResponseBody
-    public String captchaVerificationV2(@RequestParam String response) {
+    public String captchaVerificationV2(@RequestParam String response) throws JsonProcessingException {
         Map<String, String> body = new HashMap<>();
         body.put("secret", secret);
         body.put("response", response);
@@ -82,13 +82,15 @@ public class CaptchaController {
         Map<String, Object> responseBody = recaptchaResponseEntity.getBody();
         boolean recaptchaSucess = (Boolean)responseBody.get("success");
         System.out.println(recaptchaSucess);
+        Map<String, String> result = new HashMap<>();
         if ( !recaptchaSucess) {
             List<String> errorCodes = (List)responseBody.get("error-codes");
-            return errorCodes.stream()
+            result.put("result", errorCodes.stream()
                     .map(s -> RecaptchaUtil.RECAPTCHA_ERROR_CODE.get(s))
-                    .collect(Collectors.joining(", "));
+                    .collect(Collectors.joining(", ")));
         }else {
-            return StringUtils.EMPTY;
+            result.put("response","Captcha matched successfully");
         }
+        return new ObjectMapper().writeValueAsString(result);
     }
 }

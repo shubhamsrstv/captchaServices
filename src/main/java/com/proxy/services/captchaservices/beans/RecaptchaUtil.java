@@ -17,5 +17,9 @@ public class RecaptchaUtil {
                 "The response parameter is invalid or malformed");
         RECAPTCHA_ERROR_CODE.put("bad-request",
                 "The request is invalid or malformed");
+        RECAPTCHA_ERROR_CODE.put("timeout-or-duplicate",
+                "The response key is duplicated or timeout");
+        RECAPTCHA_ERROR_CODE.put("invalid-keys",
+                "The response key is invalid");
     }
 }
