@@ -23,6 +23,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/com/proxy/services/captchaservices/beans/RecaptchaUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/com/proxy/services/captchaservices/controller/CaptchaController.java">
           <value>
             <set />
